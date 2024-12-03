@@ -1,0 +1,31 @@
+services:
+  backend:
+    build:
+      context: ./todo-app-backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./todo-app-backend/.env
+    volumes:
+      - ./todo-app-backend:/app
+    depends_on:
+      - mongodb
+
+  frontend:
+    build:
+      context: ./todo-app-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
